@@ -79,8 +79,8 @@ if [ "${EOL_DATABASE_REPLICATION_ROLE}" == "master" ]; then
   if [ ! -f /replication_configured ]; then
     echo "=> Starting MySQL ..." >> ${LOG}
     StartMySQL
-    echo "=> Creating a log user ${EOL_REPLICATION_USER}:${EOL_REPLICATION_PASS}"
-    mysql -uroot -e "CREATE USER '${EOL_REPLICATION_USER}'@'%' IDENTIFIED BY '${EOL_REPLICATION_PASS}'"
+    echo "=> Creating a log user ${EOL_REPLICATION_USER}:${EOL_REPLICATION_PASSWORD}"
+    mysql -uroot -e "CREATE USER '${EOL_REPLICATION_USER}'@'%' IDENTIFIED BY '${EOL_REPLICATION_PASSWORD}'"
     mysql -uroot -e "GRANT REPLICATION SLAVE ON *.* TO '${EOL_REPLICATION_USER}'@'%'"
     echo "=> Done!" >> ${LOG}
     mysqladmin -uroot shutdown
