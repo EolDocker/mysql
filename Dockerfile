@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:14.04.1
 MAINTAINER Dmitry Mozzherin
 
 RUN apt-get update \
@@ -8,17 +8,16 @@ RUN apt-get update \
 # Remove pre-installed database
 RUN rm -rf /var/lib/mysql/*
 
-ADD my.cnf /etc/mysql/my.cnf
-# RUN  /etc/mysql/my.cnf /usr/share/mysql/my-default.cnf
-
 # Exposed ENV
 ENV MYSQL_USER admin
 ENV MYSQL_PASS **Random**
 
 VOLUME /var/log
 VOLUME /var/lib/mysql
+VOLUME /etc/mysql
 EXPOSE 3306
 
-ADD start.sh /start.sh
+COPY start.sh /start.sh
+COPY stop.sh /stop.sh
 CMD ["/start.sh"]
 
