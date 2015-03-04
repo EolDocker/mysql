@@ -1,6 +1,6 @@
 FROM ubuntu:14.04.1
 MAINTAINER Dmitry Mozzherin
-
+ENV LAST_FULL_REBUILD 2015-03-05
 RUN apt-get update \
     && apt-get -yq install mysql-server-5.6 pwgen \
     && rm -rf /var/lib/apt/lists/*
