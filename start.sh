@@ -64,7 +64,8 @@ if [[ ! -d $VOLUME_HOME/mysql ]]; then
   if [ ! -f /usr/share/mysql/my-default.cnf ] ; then
     cp $CONF_FILE /usr/share/mysql/my-default.cnf
   fi
-  mysql_install_db > /dev/null 2>&1
+  mysql_install_db --user=mysql --ldata=/var/lib/mysql/
+  # mysql_install_db > /dev/null 2>&1
   echo "=> Done!" >> ${LOG}
   echo "========================================================================" >> ${LOG}
   CreateMySQLUsers
