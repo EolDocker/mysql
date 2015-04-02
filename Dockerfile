@@ -1,8 +1,8 @@
-FROM ubuntu:14.04.1
+FROM debian:squeeze
 MAINTAINER Dmitry Mozzherin
 ENV LAST_FULL_REBUILD 2015-03-05
 RUN apt-get update \
-    && apt-get -yq install mysql-server-5.6 pwgen \
+    && apt-get -yq install mysql-server-5.1 pwgen \
     && rm -rf /var/lib/apt/lists/*
 
 # Remove pre-installed database
