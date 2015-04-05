@@ -8,8 +8,7 @@ StartMySQL ()
 {
   /usr/bin/mysqld_safe > /dev/null 2>&1 &
 
-  # Time out in 1 minute
-  LOOP_LIMIT=13
+  LOOP_LIMIT=30
   echo "========================================================================" >> ${LOG}
   for (( i=0 ; ; i++ )); do
     if [ ${i} -eq ${LOOP_LIMIT} ]; then
@@ -77,7 +76,7 @@ fi
 if [ "${EOL_DATABASE_REPLICATION_ROLE}" == "master" ]; then
   echo "========================================================================" >> ${LOG}
   echo "=> Configuring MySQL replication as master ..." >> ${LOG}
-  if [ ! -f /replication_configured ]; then
+  if [ ! -f $VOLUME_HOME/replication_configured ]; then
     echo "=> Starting MySQL ..." >> ${LOG}
     StartMySQL
     echo "=> Creating a log user ${EOL_REPLICATION_USER}:${EOL_REPLICATION_PASSWORD}"
@@ -85,7 +84,7 @@ if [ "${EOL_DATABASE_REPLICATION_ROLE}" == "master" ]; then
     mysql -uroot -e "GRANT REPLICATION SLAVE ON *.* TO '${EOL_REPLICATION_USER}'@'%'"
     echo "=> Done!" >> ${LOG}
     mysqladmin -uroot shutdown
-    touch /replication_configured
+    touch $VOLUME_HOME/replication_configured
   else
     echo "=> MySQL replication master already configured, skip" >> ${LOG}
   fi
@@ -96,7 +95,7 @@ fi
 if [ "${EOL_DATABASE_REPLICATION_ROLE}" == "slave" ]; then
   echo "========================================================================" >> ${LOG}
   echo "=> Configuring MySQL replication as slave ..." >> ${LOG}
-  if [ ! -f /replication_configured ]; then
+  if [ ! -f $VOLUME_HOME/replication_configured ]; then
     RAND="$(date +%s | rev | cut -c 1-2)$(echo ${RANDOM})" >> ${LOG}
     echo "=> Starting MySQL ..." >> ${LOG}
     StartMySQL
@@ -104,7 +103,7 @@ if [ "${EOL_DATABASE_REPLICATION_ROLE}" == "slave" ]; then
     mysql -uroot -e "CHANGE MASTER TO MASTER_HOST='${EOL_DATABASE_HOST}',MASTER_USER='${EOL_REPLICATION_USER}',MASTER_PASSWORD='${EOL_REPLICATION_PASSWORD}',MASTER_PORT=${EOL_DATABASE_PORT}, MASTER_CONNECT_RETRY=30"
     echo "=> Done!" >> ${LOG}
     mysqladmin -uroot shutdown
-    touch /replication_configured
+    touch $VOLUME_HOME/replication_configured
   else
     echo "=> MySQL replicaiton slave already configured, skip" >> ${LOG}
   fi
