@@ -111,4 +111,7 @@ if [ "${EOL_DATABASE_REPLICATION_ROLE}" == "slave" ]; then
 fi
 
 tail -F $LOG &
+chmod a+rx /
+chown mysql:mysql /var/lib/mysql
+chown mysql:mysql /var/log/mysql
 exec mysqld_safe
