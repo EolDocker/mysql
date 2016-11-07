@@ -4,6 +4,8 @@ VOLUME_HOME="/var/lib/mysql"
 CONF_FILE="/etc/mysql/my.cnf"
 LOG="/var/log/mysql/error.log"
 
+umask 0022
+
 StartMySQL ()
 {
   /usr/bin/mysqld_safe > /dev/null 2>&1 &
