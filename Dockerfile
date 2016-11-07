@@ -1,4 +1,4 @@
-FROM debian:6.0.10
+FROM debian:wheezy
 MAINTAINER Dmitry Mozzherin
 ENV LAST_FULL_REBUILD 2015-03-05
 
